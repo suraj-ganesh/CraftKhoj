@@ -17,7 +17,7 @@ export async function GET(_req: NextRequest, ctx: { params: Promise<{ id: string
   const { id } = await ctx.params;
   const report = await prisma.report.findUnique({
     where: { id: Number(id) },
-    include: { product: { include: { artisan: { include: { user: true } } } }, reporter: true },
+    include: { product: { include: { artisan: { include: { user: { select: { id: true, fullName: true, email: true } } } } } }, reporter: { select: { id: true, fullName: true, email: true } } },
   });
   if (!report) return notFound("Report not found");
   return json({ report });

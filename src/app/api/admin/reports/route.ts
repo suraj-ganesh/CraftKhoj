@@ -11,7 +11,7 @@ export async function GET() {
     prisma.order.findMany({ include: { orderItems: { include: { product: { include: { category: true, artisan: true } } } } } }),
     prisma.product.findMany({ include: { category: true } }),
     prisma.user.findMany(),
-    prisma.artisanProfile.findMany({ orderBy: { trustScore: "desc" }, include: { user: true, products: true } }),
+    prisma.artisanProfile.findMany({ orderBy: { trustScore: "desc" }, include: { user: { select: { id: true, fullName: true } }, products: true } }),
     prisma.report.findMany({ where: { status: "OPEN" }, include: { product: true, reporter: true } }),
     prisma.craftCategory.findMany({ include: { products: true } }),
   ]);
@@ -138,6 +138,16 @@ export async function GET() {
     })),
     lowStock,
     forecasts,
-    moderationReports: openReports,
+    moderationReports: openReports.map((r) => ({
+      id: r.id,
+      productId: r.productId,
+      reason: r.reason,
+      description: r.description,
+      status: r.status,
+      adminRemarks: r.adminRemarks,
+      createdAt: r.createdAt,
+      product: r.product,
+      reporter: { id: r.reporter.id, fullName: r.reporter.fullName },
+    })),
   });
 }

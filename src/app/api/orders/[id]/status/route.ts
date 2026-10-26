@@ -20,7 +20,7 @@ export async function PUT(req: NextRequest, ctx: Ctx) {
   const order = await prisma.order.findUnique({
     where: { id: orderId },
     include: {
-      orderItems: { include: { product: { include: { artisan: { include: { user: true } } } } } },
+      orderItems: { include: { product: { include: { artisan: { include: { user: { select: { id: true, fullName: true } } } } } } } },
     },
   });
   if (!order) return notFound("Order not found");

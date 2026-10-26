@@ -14,7 +14,7 @@ export async function GET() {
   if (!user) return unauthorized();
   const items = await prisma.cartItem.findMany({
     where: { buyerId: user.id },
-    include: { product: { include: { images: true, artisan: { include: { user: true } } } } },
+    include: { product: { include: { images: true, artisan: { include: { user: { select: { id: true, fullName: true, email: true } } } } } } },
     orderBy: { createdAt: "asc" },
   });
   const total = items.reduce((sum, i) => sum + Number(i.product.price) * i.quantity, 0);
