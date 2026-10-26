@@ -53,9 +53,10 @@ const roleAreas: Record<string, { label: string; href: string }[]> = {
   ADMIN: [
     { label: "Dashboard", href: "/admin" },
     { label: "Users", href: "/admin/users" },
-    { label: "Categories", href: "/admin/categories" },
-    { label: "Reports", href: "/admin/reports" },
     { label: "Orders", href: "/admin/orders" },
+    { label: "Categories", href: "/admin/categories" },
+    { label: "Products", href: "/admin/products" },
+    { label: "Reports", href: "/admin/reports" },
   ],
 };
 

@@ -2,7 +2,7 @@ export type PriceLike = number | string | { toString(): string };
 
 export const formatPrice = (price: PriceLike) => {
   const value = typeof price === "number" ? price : Number(price.toString());
-  return `$${value.toLocaleString("en-US")}`;
+  return `Rs. ${value.toLocaleString("en-IN")}`;
 };
 
 export const trustLabel = (score: number) =>

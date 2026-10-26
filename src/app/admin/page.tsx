@@ -13,6 +13,7 @@ const tabs = [
   { href: "/admin/users", label: "Users" },
   { href: "/admin/orders", label: "Orders" },
   { href: "/admin/categories", label: "Categories" },
+  { href: "/admin/products", label: "Products" },
   { href: "/admin/reports", label: "Reports" },
 ];
 
@@ -23,11 +24,11 @@ export default async function AdminPage() {
 
   const [users, orders, products, reviews, reports, provenance] = await Promise.all([
     prisma.user.findMany({ select: { role: true, status: true, createdAt: true } }),
-    prisma.order.findMany({ where: { orderStatus: { not: "CANCELLED" } }, include: { orderItems: { include: { product: true } } } }),
-    prisma.product.findMany({ include: { category: true, orderItems: { include: { order: { include: { orderItems: { include: { product: true } } } } } } } }),
-    prisma.review.findMany({ orderBy: { createdAt: "asc" } }),
-    prisma.report.findMany({ where: { status: "OPEN" }, include: { product: true, reporter: true }, orderBy: { createdAt: "asc" } }),
-    prisma.provenanceRecord.findMany({ where: { verificationStatus: "PENDING" }, include: { product: true } }),
+    prisma.order.findMany({ where: { orderStatus: { not: "CANCELLED" } }, select: { createdAt: true, totalAmount: true, orderItems: { select: { productId: true, quantity: true } } } }),
+    prisma.product.findMany({ select: { status: true, category: { select: { name: true } } } }),
+    prisma.review.findMany({ select: { rating: true }, orderBy: { createdAt: "asc" } }),
+    prisma.report.findMany({ where: { status: "OPEN" }, include: { product: { select: { id: true, title: true } }, reporter: { select: { fullName: true } } }, orderBy: { createdAt: "asc" } }),
+    prisma.provenanceRecord.findMany({ where: { verificationStatus: "PENDING" }, select: { id: true } }),
   ]);
 
   // revenue per month (last 6 months)

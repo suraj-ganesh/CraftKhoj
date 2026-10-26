@@ -36,37 +36,19 @@ async function main() {
 
   const mayaUser = await prisma.user.create({ data: { fullName: "Maya Shrestha", email: "maya@craftkhoj.com", passwordHash, role: "ARTISAN" } });
   const saraswatiUser = await prisma.user.create({ data: { fullName: "Saraswati Tamang", email: "saraswati@craftkhoj.com", passwordHash, role: "ARTISAN" } });
-  const dawaUser = await prisma.user.create({ data: { fullName: "Dawa Gurung", email: "dara@craftkhoj.com", passwordHash, role: "ARTISAN" } });
 
   const maya = await prisma.artisanProfile.create({
     data: {
       userId: mayaUser.id, craftSpecialty: "Newari woodcarving", bio: "Maya learned the language of carved windows from her grandfather. Her workshop keeps the rhythm of hand tools, local timber, and patient detail alive in Patan.",
-      district: "Lalitpur", workshopAddress: "Patan, Lalitpur", yearsExperience: 24, portraitUrl: "https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=240&q=80",
+      district: "Lalitpur", workshopAddress: "Patan, Lalitpur", yearsExperience: 24, portraitUrl: "/avatars/maya.svg",
       verificationStatus: "APPROVED", verificationNote: "Workshop visit completed 2023; tools, timber stock, and family guild confirmed.", trustScore: 96,
     },
   });
   const saraswati = await prisma.artisanProfile.create({
     data: {
       userId: saraswatiUser.id, craftSpecialty: "Dhaka weaving", bio: "Saraswati works with a small circle of women weavers to make modern Dhaka pieces that still carry the geometry of the hills.",
-      district: "Kathmandu", workshopAddress: "Boudha, Kathmandu", yearsExperience: 18, portraitUrl: "https://images.unsplash.com/photo-1531123897727-8f129e1688ce?auto=format&fit=crop&w=240&q=80",
+      district: "Kathmandu", workshopAddress: "Boudha, Kathmandu", yearsExperience: 18, portraitUrl: "/avatars/saraswati.svg",
       verificationStatus: "APPROVED", verificationNote: "Frame looms and weaver circle confirmed on site 2022.", trustScore: 94,
-    },
-  });
-  const dawa = await prisma.artisanProfile.create({
-    data: {
-      userId: dawaUser.id, craftSpecialty: "Terracotta pottery", bio: "Dawa's studio is one of Bhaktapur's small working kilns, where local clay is shaped by hand and fired slowly for a deep, earthen finish.",
-      district: "Bhaktapur", workshopAddress: "Thimi, Bhaktapur", yearsExperience: 31, portraitUrl: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=240&q=80",
-      verificationStatus: "APPROVED", verificationNote: "Kiln and clay source verified 2024.", trustScore: 91,
-    },
-  });
-  // a pending artisan registration so the verifier queue is not empty
-  const bikashUser = await prisma.user.create({ data: { fullName: "Bikash Manandhar", email: "bikash@craftkhoj.com", passwordHash, role: "ARTISAN" } });
-  const bikash = await prisma.artisanProfile.create({
-    data: {
-      userId: bikashUser.id, craftSpecialty: "Mithila & Newari painting", bio: "Fourth-generation painter working on the painted windows and paubha scrolls of the valley.",
-      district: "Kathmandu", workshopAddress: "Kirtipur, Kathmandu", yearsExperience: 12,
-      portraitUrl: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=240&q=80",
-      verificationStatus: "PENDING", trustScore: 0,
     },
   });
 
@@ -161,20 +143,6 @@ async function main() {
     ],
   });
 
-  const vessel = await makeProduct({
-    artisan: dawa, category: cats["Pottery"], title: "Bhaktapur Red-Clay Vessel", price: 52, stock: 7,
-    image: "https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?auto=format&fit=crop&w=900&q=85",
-    description: "A generous, slightly irregular vessel with the warm color of Bhaktapur clay. Each one carries the small marks of the wheel.",
-    origin: "Thimi, Bhaktapur", provenanceId: "CK-BH-2024-00186", materials: ["Bhaktapur red clay", "Natural slip"],
-    method: "Wheel-thrown and wood-fired", productionDate: "2024-08-22", status: "APPROVED",
-    tags: "ceramic, vessel, kiln-fired", featured: true,
-    events: [
-      { date: "2024-08-22", title: "Thrown at the studio", detail: "Shaped on Dawa's kick wheel using clay sourced from the local valley." },
-      { date: "2024-08-26", title: "Wood-fired", detail: "Fired slowly in the studio kiln for an earthen surface." },
-      { date: "2024-08-30", title: "Provenance verified", detail: "Production notes and workshop photos accepted by CraftKhoj." },
-    ],
-  });
-
   const earrings = await makeProduct({
     artisan: maya, category: cats["Jewellery"], title: "Sun Gilt Earrings", price: 96, stock: 2,
     image: "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&w=900&q=85",
@@ -217,19 +185,6 @@ async function main() {
     ],
   });
 
-  // a PENDING product so the verifier queue shows something
-  await makeProduct({
-    artisan: bikash, category: cats["Metalcraft"], title: "Paubha Horizon Plate", price: 60, stock: 5,
-    image: "https://images.unsplash.com/photo-1533158326339-7f3cf2404354?auto=format&fit=crop&w=900&q=85",
-    description: "A cast brass plate engraved with a paubha horizon line — mountains, clouds, and the sun wheel in low relief.",
-    origin: "Kirtipur, Kathmandu", provenanceId: null, materials: ["Brass"],
-    method: "Sand-cast and chiselled", productionDate: "2026-01-12", status: "PENDING",
-    tags: "brass, engraved, ritual",
-    events: [
-      { date: "2026-01-12", title: "Submitted from the workshop", detail: "Bikash submitted casting photos and chisel work for review." },
-    ],
-  });
-
   // ---------- reviews ----------
   await prisma.review.createMany({
     data: [
@@ -237,7 +192,6 @@ async function main() {
       { productId: sajha.id, buyerId: buyer2.id, rating: 5, comment: "Maya's panel is heirloom quality. The provenance record made me confident ordering from abroad.", createdAt: U("2024-12-02") },
       { productId: indreni.id, buyerId: buyer1.id, rating: 5, comment: "Joyful runner — colors survived the first wash.", createdAt: U("2024-10-05") },
       { productId: indreni.id, buyerId: buyer2.id, rating: 4, comment: "Lovely weave, slightly lighter weight than I expected.", createdAt: U("2024-10-11") },
-      { productId: vessel.id, buyerId: buyer1.id, rating: 5, comment: "Beautiful speckles from the firing. Arrived packed in straw.", createdAt: U("2024-09-15") },
       { productId: earrings.id, buyerId: buyer2.id, rating: 5, comment: "Sunburst texture catches light exactly as described.", createdAt: U("2024-11-25") },
       { productId: notebook.id, buyerId: buyer1.id, rating: 4, comment: "Great texture for fountain pens. Cover could be stiffer.", createdAt: U("2024-08-02") },
       { productId: bowl.id, buyerId: buyer2.id, rating: 5, comment: "Used it for daal at a dinner — guests noticed the pipal shape before the food.", createdAt: U("2024-07-20") },
@@ -247,12 +201,11 @@ async function main() {
   // ---------- orders ----------
   const order1 = await prisma.order.create({
     data: {
-      buyerId: buyer1.id, totalAmount: 294, paymentMethod: "SIMULATED", paymentStatus: "PAID", orderStatus: "DELIVERED",
+      buyerId: buyer1.id, totalAmount: 242, paymentMethod: "SIMULATED", paymentStatus: "PAID", orderStatus: "DELIVERED",
       shippingName: "Aarav Shrestha", shippingPhone: "9841223344", shippingAddress: "Jhamsikhel Road 44, Lalitpur", createdAt: U("2024-11-10"),
       orderItems: { create: [
         { productId: sajha.id, quantity: 1, unitPrice: 168 },
         { productId: indreni.id, quantity: 1, unitPrice: 74 },
-        { productId: vessel.id, quantity: 1, unitPrice: 52 },
       ] },
     },
   });
@@ -280,7 +233,7 @@ async function main() {
   });
 
   // ---------- cart ----------
-  await prisma.cartItem.create({ data: { buyerId: buyer1.id, productId: vessel.id, quantity: 1 } });
+  await prisma.cartItem.create({ data: { buyerId: buyer1.id, productId: notebook.id, quantity: 1 } });
 
   // ---------- report ----------
   await prisma.report.create({
@@ -292,7 +245,7 @@ async function main() {
   });
 
   console.log("Seed complete:");
-  console.log(`  users: admin@craftkhoj.com, verifier@craftkhoj.com, buyer@craftkhoj.com (+ maya/saraswati/dara@craftkhoj.com artisans)`);
+  console.log(`  users: admin@craftkhoj.com, verifier@craftkhoj.com, buyer@ + priya@ (buyers), maya@ + saraswati@ (artisans)`);
   console.log(`  password for every account: ${PASSWORD}`);
   console.log(`  orders seeded: #${order1.id}, #${order2.id}, #${order3.id}`);
 }

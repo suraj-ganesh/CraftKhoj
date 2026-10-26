@@ -19,7 +19,7 @@ export function RevenueTrend({ data }: { data: { label: string; revenue: number 
           <CartesianGrid stroke="#374B4A22" strokeDasharray="0" />
           <XAxis dataKey="label" tick={{ fontSize: 10, fill: "#526760", fontFamily: "'DM Sans'" }} axisLine={{ stroke: "#374B4A" }} tickLine={false} />
           <YAxis tick={{ fontSize: 10, fill: "#526760", fontFamily: "'DM Sans'" }} axisLine={{ stroke: "#374B4A" }} tickLine={false} />
-          <Tooltip formatter={(v: number) => [`$${v.toLocaleString()}`, "Revenue"]} contentStyle={{ border: "2px solid #374B4A", borderRadius: 0, fontFamily: "'DM Sans'", fontSize: 12 }} />
+          <Tooltip formatter={(v: number) => [`Rs. ${v.toLocaleString("en-IN")}`, "Revenue"]} contentStyle={{ border: "2px solid #374B4A", borderRadius: 0, fontFamily: "'DM Sans'", fontSize: 12 }} />
           <Area type="monotone" dataKey="revenue" stroke="#374B4A" strokeWidth={2.5} fill="url(#revenueFill)" />
         </AreaChart>
       </ResponsiveContainer>

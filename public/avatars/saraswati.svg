@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" width="240" height="240">
+  <style>
+    @keyframes bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(3px); } }
+    @keyframes blink { 0%, 90%, 100% { transform: scaleY(1); } 94% { transform: scaleY(0.08); } }
+    @keyframes thread { 0%,100% { transform: translateX(0); } 50% { transform: translateX(6px); } }
+    .head-group { animation: bob 4.8s ease-in-out infinite; transform-origin: 120px 150px; }
+    .eyelids { animation: blink 4.7s linear infinite; transform-origin: center; }
+    .weave { animation: thread 2.8s ease-in-out infinite; transform-origin: center; }
+  </style>
+
+  <rect x="0" y="0" width="240" height="240" fill="#FCF7EE"/>
+  <!-- woven loom motif -->
+  <g class="weave">
+    <rect x="0" y="0" width="240" height="14" fill="#88D9E6" stroke="#374B4A" stroke-width="3"/>
+    <rect x="0" y="0" width="34" height="14" fill="#F5B301"/>
+    <rect x="206" y="0" width="34" height="14" fill="#F5B301"/>
+  </g>
+  <path d="M0 232 L30 240 L60 232 L90 240 L120 232 L150 240 L180 232 L210 240 L240 232 L240 240 L0 240 Z" fill="#8CD867" stroke="#374B4A" stroke-width="4"/>
+
+  <g class="head-group">
+    <!-- shoulders + shawl -->
+    <path d="M30 240 L30 212 Q58 172 120 172 Q182 172 210 212 L210 240 Z" fill="#F5B301" stroke="#374B4A" stroke-width="4"/>
+    <path d="M96 240 L100 176 L116 176 L120 240 Z" fill="#88D9E6" stroke="#374B4A" stroke-width="3"/>
+    <path d="M120 240 L124 176 L140 176 L144 240 Z" fill="#88D9E6" stroke="#374B4A" stroke-width="3"/>
+    <!-- neck -->
+    <rect x="106" y="154" width="28" height="30" fill="#BC7B4E" stroke="#374B4A" stroke-width="4"/>
+
+    <!-- long hair behind -->
+    <path d="M70 176 Q64 84 120 78 Q176 84 170 176 L156 176 Q162 110 120 96 Q78 110 84 176 Z" fill="#1F1F1F"/>
+    <circle cx="86" cy="150" r="8" fill="#C5FFFD" stroke="#374B4A" stroke-width="3"/>
+    <circle cx="154" cy="156" r="7" fill="#F28C8C" stroke="#374B4A" stroke-width="3"/>
+
+    <!-- face -->
+    <ellipse cx="120" cy="118" rx="40" ry="48" fill="#C98C5A" stroke="#374B4A" stroke-width="4"/>
+    <!-- hair fringe -->
+    <path d="M80 106 Q86 74 120 74 Q154 74 160 106 Q160 82 136 80 Q102 78 86 100 Z" fill="#1F1F1F"/>
+    <!-- brows -->
+    <path d="M100 104 Q106 100 112 104" fill="none" stroke="#374B4A" stroke-width="3.5" stroke-linecap="round"/>
+    <path d="M128 104 Q134 100 140 104" fill="none" stroke="#374B4A" stroke-width="3.5" stroke-linecap="round"/>
+    <!-- eyes -->
+    <g class="eyelids">
+      <ellipse cx="105" cy="116" rx="5" ry="6" fill="#374B4A"/>
+      <ellipse cx="135" cy="116" rx="5" ry="6" fill="#374B4A"/>
+      <circle cx="106.5" cy="114" r="1.6" fill="#F7FAF8"/>
+      <circle cx="136.5" cy="114" r="1.6" fill="#F7FAF8"/>
+    </g>
+    <!-- bindi + nose + smile -->
+    <circle cx="120" cy="104" r="3.6" fill="#C14E3D" stroke="#374B4A" stroke-width="2"/>
+    <path d="M120 120 L120 131" stroke="#374B4A" stroke-width="3.5" stroke-linecap="round"/>
+    <path d="M107 141 Q120 152 133 141" fill="none" stroke="#374B4A" stroke-width="3.5" stroke-linecap="round"/>
+    <!-- earrings -->
+    <rect x="76" y="128" width="9" height="13" fill="#C14E3D" stroke="#374B4A" stroke-width="3"/>
+    <rect x="155" y="128" width="9" height="13" fill="#C14E3D" stroke="#374B4A" stroke-width="3"/>
+  </g>
+</svg>

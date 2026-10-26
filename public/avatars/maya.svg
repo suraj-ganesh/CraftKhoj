@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" width="240" height="240">
+  <style>
+    @keyframes bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-3.5px); } }
+    @keyframes blink { 0%, 92%, 100% { transform: scaleY(1); } 96% { transform: scaleY(0.08); } }
+    @keyframes chime { 0%,100% { transform: rotate(-6deg); opacity: .0; } 10%,80% { transform: rotate(0deg); opacity: .85; } }
+    .head-group { animation: bob 4.2s ease-in-out infinite; transform-origin: 120px 150px; }
+    .eyelids { animation: blink 5.5s linear infinite; transform-origin: center; }
+    .spark { animation: chime 6s ease-in-out infinite; transform-origin: center; }
+  </style>
+
+  <rect x="0" y="0" width="240" height="240" fill="#88D9E6"/>
+  <rect x="146" y="52" width="20" height="20" fill="#F5B301" stroke="#374B4A" stroke-width="3" class="spark"/>
+  <rect x="24" y="176" width="16" height="16" fill="#F7FAF8" stroke="#374B4A" stroke-width="3" transform="rotate(12 32 184)" class="spark" style="animation-delay:2.2s"/>
+  <path d="M0 226 L240 226 L240 240 L0 240 Z" fill="#C5FFFD" stroke="#374B4A" stroke-width="4"/>
+
+  <g class="head-group">
+    <!-- shoulders -->
+    <path d="M36 240 L36 216 Q60 178 120 178 Q180 178 204 216 L204 240 Z" fill="#526760" stroke="#374B4A" stroke-width="4"/>
+    <path d="M112 178 L120 216 L128 178 Z" fill="#88D9E6" stroke="#374B4A" stroke-width="3"/>
+    <!-- neck -->
+    <rect x="106" y="158" width="28" height="30" fill="#C98C5A" stroke="#374B4A" stroke-width="4"/>
+
+    <!-- hair back + bun -->
+    <circle cx="120" cy="66" r="13" fill="#2B2B2B"/>
+    <rect x="112" y="34" width="16" height="36" rx="8" fill="#2B2B2B"/>
+    <circle cx="120" cy="40" r="9" fill="#526760" stroke="#374B4A" stroke-width="3"/>
+
+    <!-- face -->
+    <ellipse cx="120" cy="118" rx="42" ry="50" fill="#D89B67" stroke="#374B4A" stroke-width="4"/>
+    <!-- hair front -->
+    <path d="M78 108 Q76 64 120 62 Q164 64 162 108 Q162 84 138 82 Q104 78 84 104 Z" fill="#2B2B2B"/>
+    <!-- brows -->
+    <path d="M98 106 Q105 101 112 105" fill="none" stroke="#374B4A" stroke-width="3.5" stroke-linecap="round"/>
+    <path d="M128 105 Q135 101 142 106" fill="none" stroke="#374B4A" stroke-width="3.5" stroke-linecap="round"/>
+    <!-- eyes -->
+    <g class="eyelids">
+      <ellipse cx="105" cy="117" rx="5" ry="6" fill="#374B4A"/>
+      <ellipse cx="135" cy="117" rx="5" ry="6" fill="#374B4A"/>
+      <circle cx="106.5" cy="115" r="1.6" fill="#F7FAF8"/>
+      <circle cx="136.5" cy="115" r="1.6" fill="#F7FAF8"/>
+    </g>
+    <!-- nose + smile -->
+    <path d="M120 120 L120 132" stroke="#374B4A" stroke-width="3.5" stroke-linecap="round"/>
+    <path d="M108 142 Q120 150 132 142" fill="none" stroke="#374B4A" stroke-width="3.5" stroke-linecap="round"/>
+    <!-- earring -->
+    <circle cx="82" cy="130" r="6" fill="#F5B301" stroke="#374B4A" stroke-width="3"/>
+    <circle cx="158" cy="130" r="6" fill="#F5B301" stroke="#374B4A" stroke-width="3"/>
+  </g>
+</svg>

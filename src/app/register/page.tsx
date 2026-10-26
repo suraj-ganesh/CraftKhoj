@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { ArrowRight, ShoppingBag, Sparkles } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { toast } from "sonner";
 import { SectionKicker } from "@/components/craft";
 
@@ -46,20 +46,9 @@ export default function RegisterPage() {
       </section>
       <section className="page-content">
         <form className="lookup-box" style={{ maxWidth: 720, margin: "0 auto" }} onSubmit={submit}>
-          <div className="role-switch">
-            <span className="role-switch-label" data-on={role === "BUYER"}><ShoppingBag size={15} /> Buyer</span>
-            <button
-              type="button"
-              role="switch"
-              aria-checked={role === "ARTISAN"}
-              aria-label={`Join as ${role === "BUYER" ? "artisan" : "buyer"}`}
-              className="role-switch-rail"
-              data-on={role === "ARTISAN"}
-              onClick={() => setRole(role === "BUYER" ? "ARTISAN" : "BUYER")}
-            >
-              <span className="role-switch-knob"><Sparkles size={14} /></span>
-            </button>
-            <span className="role-switch-label" data-on={role === "ARTISAN"}><Sparkles size={15} /> Artisan</span>
+          <div className="category-tabs" style={{ marginBottom: 22 }}>
+            <button type="button" onClick={() => setRole("BUYER")} className={`category-tab ${role === "BUYER" ? "active" : ""}`} style={{ padding: "11px 16px" }}>Buyer registration</button>
+            <button type="button" onClick={() => setRole("ARTISAN")} className={`category-tab ${role === "ARTISAN" ? "active" : ""}`} style={{ padding: "11px 16px" }}>Artisan registration</button>
           </div>
 
           <div className="form-grid">
