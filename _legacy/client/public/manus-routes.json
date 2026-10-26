@@ -1,0 +1,17 @@
+{
+  "routes": [
+    { "path": "/", "title": "CraftKhoj — Provenance Marketplace" },
+    { "path": "/shop", "title": "Browse heritage crafts" },
+    { "path": "/product/:id", "title": "Craft provenance record" },
+    { "path": "/provenance", "title": "Verify a Craft Provenance ID" },
+    { "path": "/artisans", "title": "Meet the makers" },
+    { "path": "/artisan/:id", "title": "Artisan story" },
+    { "path": "/workspace", "title": "CraftKhoj workspace" },
+    { "path": "/account", "title": "Account access" },
+    { "path": "/orders", "title": "Order history" },
+    { "path": "/review", "title": "Write a review" },
+    { "path": "/report", "title": "Report a listing" },
+    { "path": "/checkout", "title": "Simulated checkout" },
+    { "path": "/404", "title": "Page not found" }
+  ]
+}
