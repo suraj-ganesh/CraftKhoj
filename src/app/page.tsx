@@ -1,4 +1,5 @@
 import Link from "next/link";
+import deferred from "next/dynamic";
 import { ArrowRight, BadgeCheck, ShieldCheck } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import { listProducts } from "@/lib/products";
@@ -7,6 +8,8 @@ import { ProvenanceLookupStrip } from "@/components/ProvenanceLookup";
 import { formatPrice } from "@/lib/format";
 
 export const dynamic = "force-dynamic";
+
+const ShaderGradientPanel = deferred(() => import("@/components/ShaderGradientPanel"));
 
 export default async function HomePage() {
   const [featured, latest, artisanProfiles, verifiedCount, approvedProducts, buyerCount] = await Promise.all([
@@ -46,10 +49,7 @@ export default async function HomePage() {
           </div>
         </div>
         <div className="hero-visual">
-          <img
-            src="https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?auto=format&fit=crop&w=1200&q=85"
-            alt="Handmade red clay vessels from Bhaktapur"
-          />
+          <ShaderGradientPanel />
           <div className="hero-label">
             <strong>The record matters.</strong>
             <span>Each approved piece carries a unique Craft Provenance ID you can look up any time.</span>

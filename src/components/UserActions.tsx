@@ -28,7 +28,7 @@ export function UserActions({ userId, userStatus, isSelf }: { userId: number; us
         : (
           <select
             defaultValue=""
-            style={{ font: "500 10px 'DM Sans'", border: "1.5px solid var(--forest)", padding: "3px 6px", background: "var(--paper)" }}
+            style={{ minHeight: 30, padding: "0 30px 0 10px" }}
             onChange={(e) => e.target.value && patch({ role: e.target.value })}
           >
             <option value="" disabled>Change role…</option>

@@ -27,11 +27,10 @@ export function AdminOrderStatus({ orderId, orderStatus }: { orderId: number; or
 
   return (
     <select
-      className="select-arrow"
       value={orderStatus}
       disabled={busy}
-      style={{ font: "500 11px 'DM Sans'", border: "1.5px solid var(--forest)", padding: "4px 8px", background: "var(--paper)" }}
       onChange={(e) => e.target.value !== orderStatus && set(e.target.value)}
+      style={{ minHeight: 30, padding: "0 30px 0 10px" }}
     >
       {transitions.map((s) => <option key={s} value={s}>{s.toLowerCase()}</option>)}
     </select>
