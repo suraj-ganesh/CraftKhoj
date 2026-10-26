@@ -47,9 +47,8 @@ const roleAreas: Record<string, { label: string; href: string }[]> = {
   ],
   VERIFIER: [
     { label: "Queue", href: "/verifier" },
-    { label: "Products", href: "/verifier/products" },
     { label: "Artisans", href: "/verifier/artisans" },
-    { label: "Flagged", href: "/verifier/flagged" },
+    { label: "Reports", href: "/verifier/reports" },
   ],
   ADMIN: [
     { label: "Dashboard", href: "/admin" },
@@ -70,7 +69,6 @@ export function SiteHeader({ user }: { user: { role: string; fullName: string } 
 
   return (
     <>
-      <div className="announcement"><span>NEW</span> Provenance is the product. See the record behind every approved piece. <Link href="/provenance">Learn how it works <ArrowRight size={13} /></Link></div>
       <header className="site-header">
         <div className="header-inner">
           <Logo />

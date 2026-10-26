@@ -32,9 +32,14 @@ h1, h2, h3, h4, p { margin: 0; }
 h1, h2, h3, h4, .brand-name, .section-kicker { font-family: 'Space Grotesk', sans-serif; }
 
 .site-shell { min-height: 100vh; overflow: hidden; }
-.announcement { align-items: center; background: var(--forest); color: var(--mint); display: flex; font-size: 11px; font-weight: 700; gap: 9px; justify-content: center; letter-spacing: .08em; min-height: 34px; padding: 7px 18px; text-align: center; text-transform: uppercase; }
-.announcement > span { background: var(--sky); color: var(--forest); padding: 3px 6px; }
-.announcement a { align-items: center; border-bottom: 1px solid var(--mint); display: inline-flex; gap: 5px; margin-left: 8px; }
+.role-switch { align-items: center; display: flex; gap: 14px; justify-content: center; margin-bottom: 26px; }
+.role-switch-label { font: 700 13px 'Space Grotesk'; letter-spacing: .04em; }
+.role-switch-label[data-on="false"] { color: var(--sage); font-weight: 500; }
+.role-switch-rail { background: var(--mint); border: 2px solid var(--forest); box-shadow: 3px 3px 0 var(--forest); cursor: pointer; display: flex; height: 42px; padding: 4px; position: relative; width: 92px; }
+.role-switch-rail[data-on="true"] { background: var(--sun); }
+.role-switch-knob { background: white; border: 2px solid var(--forest); display: grid; place-items: center; height: 28px; left: 4px; position: absolute; top: 4px; transition: left .18s ease; width: 42px; }
+.role-switch-rail[data-on="true"] .role-switch-knob { left: 42px; }
+.role-switch-knob svg { opacity: 1; }
 .site-header { background: var(--mint); border-bottom: var(--line); position: sticky; top: 0; z-index: 20; }
 .header-inner { align-items: center; display: flex; gap: 32px; justify-content: space-between; margin: 0 auto; max-width: 1400px; min-height: 76px; padding: 0 36px; }
 .brand-mark { align-items: center; display: inline-flex; flex-shrink: 0; gap: 11px; }

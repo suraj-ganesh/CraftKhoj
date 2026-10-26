@@ -57,10 +57,6 @@ function LoginForm() {
           <p style={{ fontSize: 12, marginTop: 16, color: "var(--sage)" }}>
             New to CraftKhoj? <Link href="/register" style={{ textDecoration: "underline", fontWeight: 700 }}>Create an account</Link>
           </p>
-          <div className="detail-specs" style={{ marginTop: 22 }}>
-            <div className="detail-spec"><span>Demo accounts</span><strong>buyer@craftkhoj.com · dara@… · verifier@… · admin@…</strong></div>
-            <div className="detail-spec"><span>Demo password</span><strong>Password123!</strong></div>
-          </div>
         </form>
       </section>
     </>

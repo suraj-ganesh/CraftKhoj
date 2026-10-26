@@ -73,7 +73,7 @@ export default async function AdminPage() {
         <MetricCard label="Platform revenue" value={formatPrice(totalRevenue)} hint={`${orders.length} paid/active orders`} />
         <MetricCard label="Buyers" value={buyers} hint={`${artisans} artisans registered`} />
         <MetricCard label="Published crafts" value={products.filter((p) => p.status === "APPROVED").length} hint={`of ${products.length} submitted`} />
-        <MetricCard label="Medium rating" value={avgRating.toFixed(1)} hint={`${reviews.length} reviews total`} />
+        <MetricCard label="Average rating" value={avgRating.toFixed(1)} hint={`${reviews.length} reviews total`} />
         <MetricCard label="Pending verification" value={provenance.length} hint="Crafts in verifier queue" />
         <MetricCard label="Open reports" value={reports.length} hint="Awaiting moderation" />
       </div>
@@ -87,9 +87,9 @@ export default async function AdminPage() {
         </Panel>
       </div>
 
-      <Panel title="Demand forecast — units on the horizon (exponential smoothing, α = 0.3)">
+      <Panel title="Demand forecast — units per period ahead (exponential smoothing, α = 0.3)">
         <DemandChart data={forecast.map((f: number, i: number) => ({ label: `M${i + 1}`, forecast: f }))} />
-        <p style={{ fontSize: 11, color: "var(--sage)", marginTop: 8 }}>Smoothed from per-item sales volume across orders. 5 periods forward.</p>
+        <p style={{ fontSize: 11, color: "var(--sage)", marginTop: 8 }}>Smoothed from per-item sales volume across orders. 4 periods ahead.</p>
       </Panel>
 
       <div className="workspace-grid">
@@ -104,7 +104,7 @@ export default async function AdminPage() {
           ))}
         </Panel>
         <Panel title="Trust leaderboard" tone="sky">
-          <p style={{ fontSize: 11, color: "var(--sage)", marginBottom: 10 }}>Full artisan trust table lives in <Link href="/admin/users" style={{ textDecoration: "underline" }}>Users</Link>.</p>
+          <p style={{ fontSize: 11, color: "var(--sage)", marginBottom: 10 }}>Full artisan trust table lives in <Link href="/admin/users?role=ARTISAN" style={{ textDecoration: "underline" }}>Users → artisans</Link>.</p>
           <p style={{ fontSize: 12, fontWeight: 700 }}>Composite formula: 0.35·verification + 0.25·reviews + 0.20·delivery + 0.15·community − 0.20·flags</p>
         </Panel>
       </div>

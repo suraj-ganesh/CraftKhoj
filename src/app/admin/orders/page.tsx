@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { formatDate, formatPrice } from "@/lib/format";
 import { DashPage, MetricCard, Panel } from "@/components/Panels";
 import { AdminOrderStatus } from "@/components/AdminOrderStatus";
+import Link from "next/link";
 
 export const dynamic = "force-dynamic";
 
@@ -14,10 +15,12 @@ const tabs = [
   { href: "/admin/reports", label: "Reports" },
 ];
 
-export default async function AdminOrdersPage() {
+export default async function AdminOrdersPage({ searchParams }: { searchParams: Promise<{ status?: string }> }) {
   await requireRole("ADMIN");
+  const { status: rawStatus } = await searchParams;
+  const statusFilter: string = ["PLACED", "PROCESSING", "SHIPPED", "DELIVERED", "CANCELLED"].includes(rawStatus ?? "") ? rawStatus! : "all";
 
-  const [orders, sums] = await Promise.all([
+  const [ordersRaw, sums] = await Promise.all([
     prisma.order.findMany({
       include: {
         buyer: true,
@@ -27,12 +30,30 @@ export default async function AdminOrdersPage() {
     }),
     prisma.order.aggregate({ where: { orderStatus: { not: "CANCELLED" } }, _sum: { totalAmount: true }, _count: true }),
   ]);
+  const orders = statusFilter === "all" ? ordersRaw : ordersRaw.filter((o) => o.orderStatus === statusFilter);
 
-  const cancelled = orders.filter((o) => o.orderStatus === "CANCELLED").length;
-  const shipped = orders.filter((o) => ["SHIPPED", "DELIVERED"].includes(o.orderStatus)).length;
+  const cancelled = ordersRaw.filter((o) => o.orderStatus === "CANCELLED").length;
+  const shipped = ordersRaw.filter((o) => ["SHIPPED", "DELIVERED"].includes(o.orderStatus)).length;
+
+  const statusFilters = [
+    { key: "all", label: "All ()" },
+    { key: "PLACED", label: "Placed" },
+    { key: "PROCESSING", label: "Processing" },
+    { key: "SHIPPED", label: "Shipped" },
+    { key: "DELIVERED", label: "Delivered" },
+    { key: "CANCELLED", label: "Cancelled" },
+  ].map((f) => ({
+    ...f,
+    label: f.key === "all" ? `All (${ordersRaw.length})` : `${f.label} (${ordersRaw.filter((o) => o.orderStatus === f.key).length})`,
+  }));
 
   return (
     <DashPage kicker="Administrator workspace" title="Order ledger." lead="Every order on the marketplace, readable and steerable — move any of them manually." tabs={tabs}>
+      <div className="workspace-tabs" style={{ marginBottom: 18 }}>
+        {statusFilters.map((f) => (
+          <Link key={f.key} href={f.key === "all" ? "/admin/orders" : `/admin/orders?status=${f.key}`} className={`workspace-tab ${statusFilter === f.key ? "active" : ""}`}>{f.label}</Link>
+        ))}
+      </div>
       <div className="metric-grid">
         <MetricCard label="Total orders" value={orders.length} hint={`${cancelled} cancelled`} />
         <MetricCard label="Net revenue" value={formatPrice(Number(sums._sum.totalAmount ?? 0))} hint="Cancel-neutral totals" />
@@ -40,7 +61,7 @@ export default async function AdminOrdersPage() {
         <MetricCard label="COD orders" value={orders.filter((o) => o.paymentMethod === "CASH_ON_DELIVERY").length} hint={`${orders.filter((o) => o.paymentMethod === "SIMULATED").length} simulated`} />
       </div>
 
-      <Panel title="All orders" tone="white">
+      <Panel title={statusFilter === "all" ? "All orders" : `${orders.length} ${statusFilter.toLowerCase()} order${orders.length === 1 ? "" : "s"}`} tone="white">
         <div className="admin-table">
           <table>
             <thead>
