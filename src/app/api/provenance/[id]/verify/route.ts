@@ -11,9 +11,9 @@ const schema = z.object({
 
 type Ctx = { params: Promise<{ id: string }> };
 
-/** PUT /api/provenance/:id/verify — verifier approves/rejects provenance claims. */
+/** PUT /api/provenance/:id/verify — administrator approves/rejects provenance claims. */
 export async function PUT(req: NextRequest, ctx: Ctx) {
-  const { user, response } = await requireUser(["VERIFIER", "ADMIN"]);
+  const { user, response } = await requireUser(["ADMIN"]);
   if (!user) return response!;
   const { id } = await ctx.params;
   const recordId = Number(id);
@@ -39,7 +39,6 @@ export async function PUT(req: NextRequest, ctx: Ctx) {
       data: {
         verificationStatus: decision,
         verificationNote: remarks ?? null,
-        verifierId: user!.id,
         verifiedAt: new Date(),
       },
     });
@@ -70,15 +69,6 @@ export async function PUT(req: NextRequest, ctx: Ctx) {
             CHANGES_REQUESTED: "Changes requested — see verification remarks.",
           }[decision],
         performedById: user!.id,
-      },
-    });
-
-    await tx.verificationLog.create({
-      data: {
-        verifierId: user!.id,
-        decision,
-        remarks,
-        provenanceRecordId: recordId,
       },
     });
 

@@ -47,8 +47,7 @@ export function ReportForm({ productId, productTitle }: { productId: number; pro
           watches listings also tracks report behavior.
         </p>
         <p style={{ fontSize: 11, color: "var(--sage)", marginTop: 12 }}>
-          Reports raise the flagged-product risk signal automatically (weight is included in the product risk score), and verifiers see
-          them in their workspace the moment they file.
+          Reports raise the flagged-product risk signal automatically (weight is included in the product risk score).
         </p>
       </div>
 

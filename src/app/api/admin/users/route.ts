@@ -31,7 +31,7 @@ export async function GET(req: NextRequest) {
 const patchSchema = z.object({
   id: z.coerce.number().int().positive(),
   status: z.enum(["ACTIVE", "DEACTIVATED"]).optional(),
-  role: z.enum(["BUYER", "ARTISAN", "VERIFIER", "ADMIN"]).optional(),
+  role: z.enum(["BUYER", "ARTISAN", "ADMIN"]).optional(),
 });
 
 /** PATCH /api/admin/users — activate/deactivate or change role (TC-10 protection). */

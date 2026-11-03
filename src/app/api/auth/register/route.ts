@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
+import { createClient } from "@/lib/supabase-server";
 import { prisma } from "@/lib/prisma";
-import { createSessionToken, hashPassword } from "@/lib/auth";
-import { SESSION_COOKIE } from "@/lib/auth";
+import { hashPassword } from "@/lib/auth";
 import { badRequest } from "@/lib/api";
 
 const schema = z.object({
@@ -27,14 +27,29 @@ export async function POST(req: NextRequest) {
   const exists = await prisma.user.findUnique({ where: { email: emailNorm } });
   if (exists) return badRequest("This email is already registered. Please log in instead.");
 
-  const passwordHash = await hashPassword(password);
+  const supabase = createClient();
+  const { error: signUpError } = await supabase.auth.signUp({
+    email: emailNorm,
+    password,
+    options: {
+      data: {
+        fullName,
+        role,
+        craftSpecialty: parsed.data.craftSpecialty ?? undefined,
+        district: parsed.data.district ?? undefined,
+        workshopAddress: parsed.data.workshopAddress ?? undefined,
+        bio: parsed.data.bio ?? undefined,
+      },
+    },
+  });
+  if (signUpError) return badRequest(signUpError.message);
 
   const user = role === "ARTISAN"
     ? await prisma.user.create({
         data: {
           fullName,
           email: emailNorm,
-          passwordHash,
+          passwordHash: await hashPassword(password),
           role: "ARTISAN",
           artisanProfile: {
             create: {
@@ -48,18 +63,14 @@ export async function POST(req: NextRequest) {
         include: { artisanProfile: true },
       })
     : await prisma.user.create({
-        data: { fullName, email: emailNorm, passwordHash, role: "BUYER" },
+        data: { fullName, email: emailNorm, passwordHash: await hashPassword(password), role: "BUYER" },
         include: { artisanProfile: true },
       });
 
-  const token = await createSessionToken({ sub: String(user.id), role: user.role, email: user.email });
-  const res = NextResponse.json({ user: { id: user.id, fullName: user.fullName, role: user.role } }, { status: 201 });
-  res.cookies.set(SESSION_COOKIE, token, {
-    httpOnly: true,
-    sameSite: "lax",
-    secure: process.env.NODE_ENV === "production",
-    path: "/",
-    maxAge: 60 * 60 * 24 * 7,
-  });
-  return res;
+  const { data: sessionData, error: signInError } = await supabase.auth.signInWithPassword({ email: emailNorm, password });
+  if (signInError || !sessionData.session) {
+    return NextResponse.json({ user: { id: user.id, fullName: user.fullName, role: user.role } }, { status: 201 });
+  }
+
+  return NextResponse.json({ user: { id: user.id, fullName: user.fullName, role: user.role } }, { status: 201 });
 }

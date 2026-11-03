@@ -25,7 +25,6 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
       artisan: { include: { user: { select: { fullName: true } } } },
       provenanceRecord: {
         include: {
-          verifier: { select: { fullName: true } },
           events: { orderBy: { eventTime: "asc" } },
         },
       },

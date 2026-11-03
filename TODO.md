@@ -29,7 +29,7 @@
 - [x] The workspace includes demonstrator metrics for revenue, orders, provenance queue, flagged listings, and low-stock alerts.
 
 ## Outcome 6 — Route manifest, diagnostics, and delivery readiness
-- [x] `public/manus-routes.json` lists every implemented page route and dynamic route pattern.
+- [ ] `public/manus-routes.json` lists every implemented page route and dynamic route pattern.
 - [x] Invalid dynamic artisan IDs render the not-found state rather than silently showing another artisan.
 - [x] Verified products include an explicit verification event in their timestamped provenance timeline.
 - [x] Public proof metrics are derived from the seeded demo records and labeled as demo counts.

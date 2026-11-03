@@ -32,7 +32,7 @@ export function UserActions({ userId, userStatus, isSelf }: { userId: number; us
             onChange={(e) => e.target.value && patch({ role: e.target.value })}
           >
             <option value="" disabled>Change role…</option>
-            {["BUYER", "ARTISAN", "VERIFIER", "ADMIN"].map((r) => <option key={r} value={r}>{r.toLowerCase()}</option>)}
+            {["BUYER", "ARTISAN", "ADMIN"].map((r) => <option key={r} value={r}>{r.toLowerCase()}</option>)}
           </select>
         )}
     </div>

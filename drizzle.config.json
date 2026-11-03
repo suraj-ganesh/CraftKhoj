@@ -1,0 +1,9 @@
+{
+  "schema": "./drizzle/schema.ts",
+  "out": "./drizzle/migrations",
+  "dialect": "postgresql",
+  "driver": "pg",
+  "dbCredentials": {
+    "connectionString": "postgresql://postgres.bgvzjnhwpqonhluhyrmo:CraftKhoj%40%23%24101@db.bgvzjnhwpqonhluhyrmo.supabase.co:5432/postgres"
+  }
+}

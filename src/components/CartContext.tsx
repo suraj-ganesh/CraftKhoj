@@ -20,6 +20,7 @@ type CartContextValue = {
   removeItem: (id: number) => Promise<void>;
   changeQuantity: (id: number, quantity: number) => Promise<void>;
   refresh: () => Promise<void>;
+  clear: () => void;
   role: string | null;
 };
 
@@ -108,11 +109,13 @@ export function CartProvider({ role, children }: { role: string | null; children
     [items, refresh, removeItem]
   );
 
+  const clear = useCallback(() => setItems([]), []);
+
   const count = items.reduce((sum, i) => sum + i.quantity, 0);
   const subtotal = items.reduce((sum, i) => sum + Number(i.product.price) * i.quantity, 0);
 
   return (
-    <CartContext.Provider value={{ items, count, subtotal, open, setOpen, addItem, removeItem, changeQuantity, refresh, role }}>
+    <CartContext.Provider value={{ items, count, subtotal, open, setOpen, addItem, removeItem, changeQuantity, refresh, clear, role }}>
       {children}
     </CartContext.Provider>
   );

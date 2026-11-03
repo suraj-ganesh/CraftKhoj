@@ -1,14 +1,32 @@
 # CraftKhoj — Provenance Marketplace
 
-React / Express / tRPC / Drizzle starter, adapted from the Sandbox web-db-user template.
+Next.js 15 (App Router) + Prisma/PostgreSQL + Tailwind. A provenance-based marketplace for Nepali heritage crafts.
 
-- `pnpm dev`: development server; honors `PORT` (default 3000).
-- `pnpm build` / `pnpm start`: build and serve `dist/index.js` and `dist/public/`.
-- `pnpm db:migrate`: apply checked-in migrations. `pnpm db:push`: generate and apply new schema changes.
-- `pnpm check` / `pnpm test`: types and application tests.
+## Commands
 
-Start with the Webdev skill's default-template guide. Platform login, storage, payments and service contracts live in its shared references; read the relevant capability before extending its helper.
+```bash
+pnpm dev          # next dev, honors PORT (default 3000)
+pnpm build        # prisma generate && next build
+pnpm start        # next start
+pnpm typecheck    # tsc --noEmit
+pnpm db:seed      # seed the database (tsx prisma/seed.ts)
+```
 
-`server/_core/publicConfig.ts` exposes only named public runtime values. Private keys stay server-side. The platform serves managed `/manus-storage/` assets; the application does not register a second proxy.
+## Stack
 
-Platform configuration is readable and editable through `webdev.config`. Default settings are initial values, not enforced constraints. The agent may modify the files, commands and configuration or follow the flexible guide for another stack.
+- **Framework:** Next.js 15 App Router, React 19
+- **Database:** PostgreSQL via Prisma ORM (`prisma/schema.prisma`), hosted on Supabase
+- **Auth:** HS256 JWT session cookie (`ck_session`), bcrypt password hashing
+- **Styling:** Tailwind CSS v4, neo-brutalist design system
+- **State:** React Context for the cart; server components read Prisma directly
+
+## Architecture
+
+- `src/app/` — App Router routes. Public market pages plus four role-guarded workzones (`/buyer`, `/studio`, `/verifier`, `/admin`), enforced by `middleware.ts` off the session cookie.
+- `src/lib/` — `prisma.ts` (singleton client), `auth.ts` (session tokens), `session.ts` (server-side session reads), `api.ts` (response helpers + `requireUser`), `products.ts` (catalog query builder), `algorithms.ts` (trust score, recommendations, risk score, demand forecasting), `format.ts`.
+- `src/components/` — shared shell, cart context/drawer, craft UI primitives, and per-workspace panels.
+- `prisma/seed.ts` — demo data: 1 admin, 1 verifier, 2 buyers, 2 artisans, sample catalog, orders. Every account uses password `Password123!`.
+
+## Environment
+
+Copy `.env.example` to `.env` and set `DATABASE_URL` (Supabase direct-connection string) and `JWT_SECRET`. `.env` is gitignored.

@@ -37,9 +37,9 @@ export default async function StudioPage() {
     <DashPage kicker="Artisan studio" title={`Workshop: ${profile.user.fullName}`} lead="Your workshop sail. Craft goes up, gets verified, then sells." tabs={tabs}>
       <div className="metric-grid">
         <MetricCard label="Published pieces" value={published.length} hint={`${products.length - published.length} awaiting/publication`} />
-        <MetricCard label="Verification queue" value={pendingVerification.length} hint="Crafts pending a verifier" />
+        <MetricCard label="Verification queue" value={pendingVerification.length} hint="Crafts pending review" />
         <MetricCard label="Open order lines" value={openOrders.length} hint="To process or ship" />
-        <MetricCard label="Trust score" value={Math.round(Number(profile.trustScore))} hint="Buyer·verifier weighted" />
+        <MetricCard label="Trust score" value={Math.round(Number(profile.trustScore))} hint="Buyer-weighted" />
       </div>
 
       <div className="workspace-grid">

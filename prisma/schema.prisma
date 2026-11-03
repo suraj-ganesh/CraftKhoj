@@ -14,7 +14,6 @@ datasource db {
 enum Role {
   BUYER
   ARTISAN
-  VERIFIER
   ADMIN
 }
 
@@ -79,8 +78,6 @@ model User {
   reportsResolved  Report[]        @relation("ReportResolver")
   provenanceEvents ProvenanceEvent[]
   cartItems        CartItem[]
-  verifications    VerificationLog[]
-  productsVerified ProvenanceRecord[] @relation("ProvenanceVerifier")
 
   @@map("users")
 }
@@ -101,7 +98,6 @@ model ArtisanProfile {
 
   user             User              @relation(fields: [userId], references: [id], onDelete: Cascade)
   products         Product[]
-  verificationLogs VerificationLog[]
 
   @@map("artisan_profiles")
 }
@@ -189,14 +185,11 @@ model ProvenanceRecord {
   processImageUrl    String?        @map("process_image_url")
   verificationStatus ApprovalStatus @default(PENDING) @map("verification_status")
   verificationNote   String?        @map("verification_note")
-  verifierId         Int?           @map("verifier_id")
-  verifiedAt         DateTime?      @map("verified_at")
+  verifiedAt         DateTime?         @map("verified_at")
   createdAt          DateTime       @default(now()) @map("created_at")
 
-  product  Product           @relation(fields: [productId], references: [id], onDelete: Cascade)
-  verifier User?             @relation("ProvenanceVerifier", fields: [verifierId], references: [id])
-  events   ProvenanceEvent[]
-  verificationLogs VerificationLog[]
+  product Product           @relation(fields: [productId], references: [id], onDelete: Cascade)
+  events  ProvenanceEvent[]
 
   @@map("provenance_records")
 }
@@ -291,20 +284,4 @@ model Report {
   resolvedBy User?  @relation("ReportResolver", fields: [resolvedById], references: [id])
 
   @@map("reports")
-}
-
-model VerificationLog {
-  id                Int                @id @default(autoincrement())
-  verifierId        Int                @map("verifier_id")
-  decision          ApprovalStatus
-  remarks           String?            @db.Text
-  artisanProfileId  Int?               @map("artisan_profile_id")
-  provenanceRecordId Int?              @map("provenance_record_id")
-  createdAt         DateTime           @default(now()) @map("created_at")
-
-  verifier         User              @relation(fields: [verifierId], references: [id])
-  artisanProfile   ArtisanProfile?   @relation(fields: [artisanProfileId], references: [id])
-  provenanceRecord ProvenanceRecord? @relation(fields: [provenanceRecordId], references: [id])
-
-  @@map("verification_logs")
 }

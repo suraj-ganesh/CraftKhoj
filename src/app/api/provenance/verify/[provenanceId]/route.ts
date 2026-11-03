@@ -16,7 +16,6 @@ export async function GET(_req: NextRequest, ctx: { params: Promise<{ provenance
       images: true,
       provenanceRecord: {
         include: {
-          verifier: { select: { fullName: true } },
           events: { orderBy: { eventTime: "asc" as const } },
         },
       },

@@ -131,7 +131,7 @@ export function ProductForm({
       </div>
 
       <div className="dashboard-panel" style={{ background: "var(--sky)" }}>
-        <div className="panel-head"><h2>Provenance evidence</h2><span className="status-badge status-blue"><span className="status-dot" />Verifier picks this up</span></div>
+        <div className="panel-head"><h2>Provenance evidence</h2><span className="status-badge status-blue"><span className="status-dot" />Review queue</span></div>
         <div className="form-grid" style={{ marginTop: 0 }}>
           <div className="form-field">
             <label>Production date</label>
@@ -143,7 +143,7 @@ export function ProductForm({
           </div>
           <div className="form-field full">
             <label>Process notes</label>
-            <textarea rows={3} style={{ background: "var(--paper)", border: "2px solid var(--forest)", padding: "11px 12px", font: "500 13px 'DM Sans'" }} value={form.processNotes} onChange={set("processNotes")} placeholder="Describe the steps, certification, or anything a verifier should know" />
+            <textarea rows={3} style={{ background: "var(--paper)", border: "2px solid var(--forest)", padding: "11px 12px", font: "500 13px 'DM Sans'" }} value={form.processNotes} onChange={set("processNotes")} placeholder="Describe the steps, certification, or anything for the review team" />
           </div>
           <ImageField label="Primary product image" value={form.image} onChange={(v) => setForm({ ...form, image: v })} />
           <ImageField label="Process photo (workshop picture)" value={form.processImageUrl} onChange={(v) => setForm({ ...form, processImageUrl: v })} />

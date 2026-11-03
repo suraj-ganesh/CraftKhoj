@@ -174,7 +174,7 @@ export function riskScore(r: RiskInput): number {
   if ((r.duplicateRate ?? 0) > 0.8) score += 10;
   if (r.price > r.categoryAvgPrice * 8 && r.provenanceStatus !== "APPROVED") score += 10;
   score += r.openReports * 10;
-  score += r.rejectedBefore * 12;
+  score += (r.rejectedBefore ?? 0) * 12;
   return Math.min(100, score);
 }
 
@@ -193,9 +193,7 @@ export async function refreshRiskScore(productId: number): Promise<number> {
     where: { categoryId: product.categoryId, status: "APPROVED" },
     _avg: { price: true },
   });
-  const rejectedBefore = await prisma.verificationLog.count({
-    where: { decision: "REJECTED", provenanceRecord: { productId } },
-  });
+  const rejectedBefore = product.reports.length;
   const score = riskScore({
     processImageUrl: product.provenanceRecord?.processImageUrl,
     processNotes: product.provenanceRecord?.processNotes,

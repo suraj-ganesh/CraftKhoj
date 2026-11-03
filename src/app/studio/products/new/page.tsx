@@ -15,7 +15,7 @@ export default async function NewProductPage() {
   await requireRole("ARTISAN");
   const categories = await prisma.craftCategory.findMany({ orderBy: { name: "asc" } });
   return (
-    <DashPage kicker="Artisan studio" title="Open a new craft." lead="Describe the piece and attach its evidence — a verifier reviews it before it goes live." tabs={tabs}>
+    <DashPage kicker="Artisan studio" title="Open a new craft." lead="Describe the piece and attach its evidence — the review happens here before it goes live." tabs={tabs}>
       <ProductForm
         mode="create"
         categories={categories.map((c) => ({ id: c.id, name: c.name }))}

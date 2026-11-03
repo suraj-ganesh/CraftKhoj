@@ -1,13 +1,18 @@
 import { NextRequest, NextResponse } from "next/server";
 import { requireUser, badRequest, unauthorized } from "@/lib/api";
 import { randomBytes } from "crypto";
-import { writeFile, mkdir } from "fs/promises";
-import path from "path";
+import { createClient } from "@supabase/supabase-js";
 
 const MAX_SIZE = 4 * 1024 * 1024;
 const ALLOWED = ["image/jpeg", "image/png", "image/webp", "image/gif"];
+const BUCKET = "craftkhoj-uploads";
 
-/** POST /api/upload — local "server storage" upload (Design.md §6 file upload). */
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL ?? "",
+  process.env.SUPABASE_PUBLISHABLE_KEY ?? ""
+);
+
+/** POST /api/upload � Supabase Storage upload (server storage) (Design.md A6 file upload). */
 export async function POST(req: NextRequest) {
   const { user, response } = await requireUser();
   if (!user) return unauthorized();
@@ -20,9 +25,17 @@ export async function POST(req: NextRequest) {
 
   const ext = file.type === "image/webp" ? "webp" : file.type === "image/gif" ? "gif" : file.type === "image/png" ? "png" : "jpg";
   const name = `${randomBytes(10).toString("hex")}.${ext}`;
-  const dir = path.join(process.cwd(), "public", "uploads");
-  await mkdir(dir, { recursive: true });
-  await writeFile(path.join(dir, name), Buffer.from(await file.arrayBuffer()));
+  const filePath = `uploads/${name}`;
 
-  return NextResponse.json({ url: `/uploads/${name}` }, { status: 201 });
+  const { data: buckets } = await supabase.storage.listBuckets();
+  const bucketExists = buckets?.some((b) => b.name === BUCKET);
+  if (!bucketExists) {
+    await supabase.storage.createBucket(BUCKET, { public: true });
+  }
+
+  const { data, error } = await supabase.storage.from(BUCKET).upload(filePath, file);
+  if (error) return badRequest(error.message);
+  const { data: { publicUrl } } = await supabase.storage.from(BUCKET).getPublicUrl(filePath);
+
+  return NextResponse.json({ url: publicUrl }, { status: 201 });
 }

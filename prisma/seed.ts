@@ -1,5 +1,4 @@
-// CraftKhoj seed — adapts the legacy demo data (_legacy/client/src/lib/craft-data.ts)
-// into the Prisma + PostgreSQL schema. Run with: pnpm db:seed
+// CraftKhoj seed — Prisma + PostgreSQL demo data. Run with: pnpm db:seed
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcryptjs";
 
@@ -10,8 +9,6 @@ const U = (iso: string) => new Date(iso);
 
 async function main() {
   console.log("Seeding CraftKhoj…");
-  await prisma.verificationLog.deleteMany();
-  await prisma.provenanceEvent.deleteMany();
   await prisma.provenanceRecord.deleteMany();
   await prisma.report.deleteMany();
   await prisma.review.deleteMany();
@@ -30,7 +27,6 @@ async function main() {
 
   // ---------- users ----------
   const admin = await prisma.user.create({ data: { fullName: "CraftKhoj Admin", email: "admin@craftkhoj.com", passwordHash, role: "ADMIN" } });
-  const verifier = await prisma.user.create({ data: { fullName: "Sunita Verma", email: "verifier@craftkhoj.com", passwordHash, role: "VERIFIER" } });
   const buyer1 = await prisma.user.create({ data: { fullName: "Aarav Shrestha", email: "buyer@craftkhoj.com", passwordHash, role: "BUYER" } });
   const buyer2 = await prisma.user.create({ data: { fullName: "Priya Karki", email: "priya@craftkhoj.com", passwordHash, role: "BUYER" } });
 
@@ -93,7 +89,6 @@ async function main() {
         productId: product.id, workshopLocation: opts.origin, productionDate: U(opts.productionDate),
         productionMethod: opts.method, processNotes: opts.processNotes ?? null,
         verificationStatus: opts.status === "APPROVED" ? "APPROVED" : "PENDING",
-        verifierId: opts.status === "APPROVED" ? verifier.id : null,
         verifiedAt: opts.status === "APPROVED" ? U(opts.events[opts.events.length - 1].date) : null,
         verificationNote: opts.status === "APPROVED" ? "Evidence reviewed and accepted — workshop, materials, and method confirmed." : null,
       },
@@ -101,14 +96,11 @@ async function main() {
 
     for (const e of opts.events) {
       await prisma.provenanceEvent.create({
-        data: { provenanceRecordId: record.id, eventType: e.title.includes("verified") ? "APPROVED" : "SUBMITTED", description: `${e.title} — ${e.detail}`, performedById: e.title.includes("verified") ? verifier.id : null, eventTime: U(e.date) },
+        data: { provenanceRecordId: record.id, eventType: e.title.includes("verified") ? "APPROVED" : "SUBMITTED", description: `${e.title} — ${e.detail}`, performedById: null, eventTime: U(e.date) },
       });
     }
 
     if (opts.status === "APPROVED") {
-      await prisma.verificationLog.create({
-        data: { verifierId: verifier.id, decision: "APPROVED", remarks: "Workshop, material, and method evidence accepted.", provenanceRecordId: record.id, createdAt: U(opts.events[opts.events.length - 1].date) },
-      });
     }
     return product;
   }

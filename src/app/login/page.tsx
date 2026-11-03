@@ -27,7 +27,7 @@ function LoginForm() {
     if (!res.ok) { toast.error(data.error ?? "Could not sign in."); return; }
     toast.success("Welcome back to CraftKhoj.");
     const next = searchParams.get("next");
-    const areaHome: Record<string, string> = { BUYER: "/buyer", ARTISAN: "/studio", VERIFIER: "/verifier", ADMIN: "/admin" };
+    const areaHome: Record<string, string> = { BUYER: "/buyer", ARTISAN: "/studio", ADMIN: "/admin" };
     router.push(next && next.startsWith("/") ? next : areaHome[data.user.role] ?? "/");
     router.refresh();
   }
@@ -38,7 +38,7 @@ function LoginForm() {
         <div className="page-intro-inner">
           <SectionKicker number="—">Account access</SectionKicker>
           <h1>Sign back in.</h1>
-          <p>Buyers, artisans, verifiers, and administrators each land in their own workspace after sign-in.</p>
+          <p>Buyers, artisans, and administrators each land in their own workspace after sign-in.</p>
         </div>
       </section>
       <section className="page-content">

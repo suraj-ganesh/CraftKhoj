@@ -20,7 +20,6 @@ const roleFilters = [
   { key: "all", label: "All accounts" },
   { key: "BUYER", label: "Buyers" },
   { key: "ARTISAN", label: "Artisans" },
-  { key: "VERIFIER", label: "Verifiers" },
   { key: "ADMIN", label: "Admins" },
   { key: "DEACTIVATED", label: "Suspended" },
 ];
@@ -64,7 +63,7 @@ export default async function AdminUsersPage({ searchParams }: { searchParams: P
         <MetricCard label="Total accounts" value={users.length} />
         <MetricCard label="Buyers" value={counts("BUYER")} />
         <MetricCard label="Artisans" value={counts("ARTISAN")} hint="incl. pending verification" />
-        <MetricCard label="Verifiers + admins" value={counts("VERIFIER") + counts("ADMIN")} />
+        <MetricCard label="Admins" value={counts("ADMIN")} />
       </div>
 
       <div className="workspace-tabs" style={{ marginBottom: 12 }}>

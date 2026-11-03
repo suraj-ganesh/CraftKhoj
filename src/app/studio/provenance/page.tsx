@@ -22,14 +22,13 @@ export default async function StudioProvenancePage() {
     where: { product: { artisanId: profile!.id } },
     include: {
       product: { include: { images: true } },
-      verifier: { select: { fullName: true } },
       events: { orderBy: { eventTime: "desc" }, take: 1 },
     },
     orderBy: { createdAt: "desc" },
   });
 
   return (
-    <DashPage kicker="Artisan studio" title="Provenance records." lead="The formal registry trail behind each of your pieces — issued once, by a verifier, on approval." tabs={tabs}>
+    <DashPage kicker="Artisan studio" title="Provenance records." lead="The formal registry trail behind each of your pieces — issued once, on approval." tabs={tabs}>
       {records.length === 0 ? (
         <Panel title="No records yet">
           <div className="danger-note">Submit a craft from <Link href="/studio/products/new" style={{ textDecoration: "underline" }}>the new-craft form</Link> and its record appears here.</div>
@@ -48,7 +47,7 @@ export default async function StudioProvenancePage() {
               <div className="detail-spec"><span>Workshop location</span><strong>{r.workshopLocation || "—"}</strong></div>
               <div className="detail-spec"><span>Production date</span><strong>{r.productionDate ? formatDate(r.productionDate) : "—"}</strong></div>
               <div className="detail-spec"><span>Method</span><strong>{r.productionMethod || "—"}</strong></div>
-              <div className="detail-spec"><span>Last verifier note</span><strong>{r.verifierId ? r.verifier?.fullName : "Awaiting review"}</strong></div>
+              <div className="detail-spec"><span>Last review note</span><strong>{r.verificationNote ?? "Awaiting review"}</strong></div>
             </div>
             {r.events[0] && (
               <div className="queue-item" style={{ marginTop: 12 }}>

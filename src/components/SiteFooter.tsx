@@ -20,7 +20,6 @@ export function SiteFooter() {
           <div>
             <span className="eyebrow">For the community</span>
             <Link href="/studio">Artisan workspace</Link>
-            <Link href="/verifier">Verifier queue</Link>
             <Link href="/admin">Admin dashboard</Link>
             <Link href="/shop">Order history</Link>
           </div>

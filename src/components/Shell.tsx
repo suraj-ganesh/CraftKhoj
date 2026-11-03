@@ -27,7 +27,6 @@ function areaHome(role: string | null | undefined) {
   switch (role) {
     case "BUYER": return "/buyer";
     case "ARTISAN": return "/studio";
-    case "VERIFIER": return "/verifier";
     case "ADMIN": return "/admin";
     default: return null;
   }
@@ -44,11 +43,6 @@ const roleAreas: Record<string, { label: string; href: string }[]> = {
     { label: "Products", href: "/studio/products" },
     { label: "Provenance", href: "/studio/provenance" },
     { label: "Orders", href: "/studio/orders" },
-  ],
-  VERIFIER: [
-    { label: "Queue", href: "/verifier" },
-    { label: "Artisans", href: "/verifier/artisans" },
-    { label: "Reports", href: "/verifier/reports" },
   ],
   ADMIN: [
     { label: "Dashboard", href: "/admin" },

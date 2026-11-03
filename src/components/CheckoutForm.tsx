@@ -5,11 +5,13 @@ import { useRouter } from "next/navigation";
 import { Check } from "lucide-react";
 import { toast } from "sonner";
 import { formatPrice } from "@/lib/format";
+import { useCart } from "@/components/CartContext";
 
 type Line = { id: number; quantity: number; product: { id: number; title: string; price: number; image: string; maker: string } };
 
 export function CheckoutForm({ lines, subtotal, defaultName }: { lines: Line[]; subtotal: number; defaultName: string }) {
   const router = useRouter();
+  const { clear } = useCart();
   const [method, setMethod] = useState<"CASH_ON_DELIVERY" | "SIMULATED">("CASH_ON_DELIVERY");
   const [form, setForm] = useState({ shippingName: defaultName, shippingPhone: "", shippingAddress: "" });
   const [busy, setBusy] = useState(false);
@@ -25,6 +27,7 @@ export function CheckoutForm({ lines, subtotal, defaultName }: { lines: Line[]; 
     const data = await res.json();
     setBusy(false);
     if (!res.ok) { toast.error(data.error ?? "Could not place the order."); return; }
+    clear();
     toast.success(`Order #${data.order.id} placed — the maker has been notified.`);
     router.push("/buyer/orders");
   }

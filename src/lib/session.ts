@@ -1,16 +1,13 @@
-import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { SESSION_COOKIE, readSessionToken } from "./auth";
+import { createClient } from "./supabase-server";
 import { prisma } from "./prisma";
 import type { Role, User } from "@prisma/client";
 
 export async function getSessionUser(): Promise<User | null> {
-  const store = await cookies();
-  const token = store.get(SESSION_COOKIE)?.value;
-  if (!token) return null;
-  const payload = await readSessionToken(token);
-  if (!payload) return null;
-  const user = await prisma.user.findUnique({ where: { id: Number(payload.sub) } });
+  const supabase = createClient();
+  const { data, error } = await supabase.auth.getUser();
+  if (error || !data.user) return null;
+  const user = await prisma.user.findUnique({ where: { email: data.user.email ?? "" } });
   if (!user || user.status !== "ACTIVE") return null;
   return user;
 }

@@ -45,7 +45,7 @@ export default async function HomePage() {
           </div>
           <div className="hero-note">
             <strong>{trustedArtisans.length}</strong>
-            <span>verified artisan workshops · every approved listing is checked by a human verifier.</span>
+            <span>verified artisan workshops · every approved listing is checked before it goes live.</span>
           </div>
         </div>
         <div className="hero-visual">
@@ -94,7 +94,7 @@ export default async function HomePage() {
             <p>
               Handmade Nepali crafts — dhaka, pottery, woodcraft, thangka, paper craft — lose value when buyers cannot
               check authenticity. CraftKhoj ties each object to verified origin, materials, and process history through
-              a three-role workflow: artisans submit, verifiers approve, admins keep the marketplace honest.
+              a two-role workflow: artisans submit, admins keep the marketplace honest.
             </p>
             <ArrowButton href="/provenance">How verification works</ArrowButton>
           </div>

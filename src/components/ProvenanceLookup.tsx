@@ -10,7 +10,7 @@ type RecordResult = {
     id: number; title: string; provenanceId: string; price: string; origin: string | null;
     image: string; category: string; status: string;
     artisan: { id: number; user: { fullName: string }; district: string | null; craftSpecialty: string | null; portraitUrl: string | null };
-    provenanceRecord: { verificationStatus: string; productionMethod: string | null; workshopLocation: string | null; verifiedAt: string | null; verifier: { fullName: string } | null } | null;
+    provenanceRecord: { verificationStatus: string; productionMethod: string | null; workshopLocation: string | null; verifiedAt: string | null } | null;
   } | null;
 };
 
@@ -76,7 +76,6 @@ type FullResult = {
     provenanceRecord: {
       verificationStatus: string; productionMethod: string | null; workshopLocation: string | null;
       productionDate: string | null; verifiedAt: string | null; verificationNote: string | null;
-      verifier: { fullName: string } | null;
       events: { id: number; eventType: string; description: string | null; eventTime: string }[];
     } | null;
   } | null;
@@ -156,11 +155,11 @@ export function ProvenanceLookup({ initialId }: { initialId?: string }) {
               <div className="record-fact"><span>Workshop location</span><strong>{p.provenanceRecord?.workshopLocation ?? "�"}</strong></div>
               <div className="record-fact"><span>Materials & method</span><strong>{p.provenanceRecord?.productionMethod ?? "�"}</strong></div>
               <div className="record-fact"><span>Production date</span><strong>{formatDate(p.provenanceRecord?.productionDate ?? null)}</strong></div>
-              <div className="record-fact"><span>Verified by</span><strong>{p.provenanceRecord?.verifier?.fullName ?? "�"}{p.provenanceRecord?.verifiedAt ? ` � ${formatDate(p.provenanceRecord.verifiedAt)}` : ""}</strong></div>
+              <div className="record-fact"><span>Verified on</span><strong>{p.provenanceRecord?.verifiedAt ? formatDate(p.provenanceRecord.verifiedAt) : "—"}</strong></div>
             </div>
             {p.provenanceRecord?.verificationNote && (
               <div className="danger-note" style={{ marginTop: 6 }}>
-                <strong>Verifier remarks:</strong> {p.provenanceRecord.verificationNote}
+                <strong>Review remarks:</strong> {p.provenanceRecord.verificationNote}
               </div>
             )}
           </div>
