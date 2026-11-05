@@ -235,6 +235,24 @@ select:focus-visible { background-color: var(--mint); box-shadow: 4px 4px 0 var(
 select option { background: var(--paper); color: var(--forest); font: 600 12px 'DM Sans', sans-serif; text-transform: none; }
 select:disabled { opacity: .5; cursor: not-allowed; box-shadow: none; transform: none; }
 
+/* ---- auth form inputs should not be uppercase ---- */
+/* The .lookup-form class forces text-transform: uppercase for the provenance
+   lookup strip. Auth forms reuse the class for layout but need lowercase text. */
+form.lookup-box .lookup-form input,
+form.lookup-box .form-field input {
+  text-transform: none;
+  font: 500 14px 'DM Sans', sans-serif;
+}
+
+/* ---- shimmering skeleton loading states ---- */
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+.animate-shimmer {
+  animation: shimmer 1.6s ease-in-out infinite;
+}
+
 /* ---- shader-gradient hero panel (r3f / shadergradient) ---- */
 .hero-visual { position: relative; }
 .shader-panel { background: var(--forest); inset: 0; position: absolute; z-index: 0; }
